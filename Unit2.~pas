@@ -1,0 +1,77 @@
+unit Unit2;
+
+interface
+
+uses
+  Forms,
+  Buttons, sSpeedButton,  sPageControl,  sButton,
+  sGroupBox, sComboBox, sCheckBox, IniFiles, Controls, StdCtrls, ComCtrls,
+  Classes;
+
+type
+  TForm2 = class(TForm)
+    sPageControl1: TsPageControl;
+    sTabSheet1: TsTabSheet;
+    sButton1: TsButton;
+    sGroupBox1: TsGroupBox;
+    sTabSheet2: TsTabSheet;
+    sCheckBox1: TsCheckBox;
+    sComboBox1: TsComboBox;
+    sButton2: TsButton;
+    procedure sButton1Click(Sender: TObject);
+    procedure sComboBox1Change(Sender: TObject);
+    procedure sButton2Click(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  Form2: TForm2;
+
+implementation
+
+uses Unit1;
+
+{$R *.dfm}
+
+procedure TForm2.sButton1Click(Sender: TObject);
+begin
+  //если выбран первый скин в списке, значит применить стиль Vista
+  if sComboBox1.ItemIndex=0 then
+    Form1.sSkinManager1.SkinName := 'Vista (internal)'
+  //иначе применить скин Office2007 Blue
+  else
+    Form1.sSkinManager1.SkinName := 'Office2007 Blue (internal)';
+end;
+
+procedure TForm2.sComboBox1Change(Sender: TObject);
+begin
+//если sCheckBox1 выбран, значит применить скин сразу
+ if sCheckBox1.Checked then
+ begin
+ //если выбран первый скин в списке, значит применить стиль Vista
+  if sComboBox1.ItemIndex=0 then
+    Form1.sSkinManager1.SkinName := 'Vista (internal)'
+  //иначе применить скин Office2007 Blue
+  else
+    Form1.sSkinManager1.SkinName := 'Office2007 Blue (internal)';
+ end;
+end;
+
+procedure TForm2.sButton2Click(Sender: TObject);
+var
+   SaveFile: TIniFile;
+   path:string; //путь к Ini файлу
+begin
+   //получаем путь к текущей директории
+   GetDir(0,path);
+
+   //сохраним выбранный скин в Ini файл
+   SaveFile := TIniFile.Create(path+ '\settings.INI');
+   SaveFile.WriteString('LoadOptions', 'SkinName', Form1.sSkinManager1.SkinName);
+   SaveFile.Free;
+end;
+
+end.
